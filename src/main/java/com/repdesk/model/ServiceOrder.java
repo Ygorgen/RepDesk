@@ -1,5 +1,6 @@
 package com.repdesk.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.repdesk.enums.ServiceOrderStatus;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,8 +19,14 @@ public class ServiceOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,unique = true, length = 30)
+    @Column(nullable = false, unique = true, length = 30)
     private String protocol;
+
+    @Column(nullable = false,length = 100)
+    private String clientName;
+
+    @Column(length = 100)
+    private String contactNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 40)
@@ -38,20 +45,25 @@ public class ServiceOrder {
 
     private Boolean physicalDamage;
 
+    private boolean wetDevice;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal budgetAmount;
 
     //Data de recebimento
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime receivedAt;
 
-    //Previsão conclusão
-    private LocalDateTime estimatedAt;
+    @Column(length = 100)
+    private String estimatedCompletionTime;
 
     //Data de entrega
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime deliveredAt;
 
     //Data da ultima atualização
     @LastModifiedDate
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime updatedAt;
 
     public ServiceOrder() {
@@ -145,12 +157,12 @@ public class ServiceOrder {
         this.receivedAt = receivedAt;
     }
 
-    public LocalDateTime getEstimatedAt() {
-        return estimatedAt;
+    public String getEstimatedCompletionTime() {
+        return estimatedCompletionTime;
     }
 
-    public void setEstimatedAt(LocalDateTime estimatedAt) {
-        this.estimatedAt = estimatedAt;
+    public void setEstimatedCompletionTime(String estimatedCompletionTime) {
+        this.estimatedCompletionTime = estimatedCompletionTime;
     }
 
     public LocalDateTime getDeliveredAt() {
@@ -172,11 +184,11 @@ public class ServiceOrder {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof ServiceOrder that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getProtocol(), that.getProtocol()) && getStatus() == that.getStatus() && Objects.equals(getProblem(), that.getProblem()) && Objects.equals(getTurnsOn(), that.getTurnsOn()) && Objects.equals(getScreenWorking(), that.getScreenWorking()) && Objects.equals(getTouchWorking(), that.getTouchWorking()) && Objects.equals(getChargingWorking(), that.getChargingWorking()) && Objects.equals(getPhysicalDamage(), that.getPhysicalDamage()) && Objects.equals(getBudgetAmount(), that.getBudgetAmount()) && Objects.equals(getReceivedAt(), that.getReceivedAt()) && Objects.equals(getEstimatedAt(), that.getEstimatedAt()) && Objects.equals(getDeliveredAt(), that.getDeliveredAt()) && Objects.equals(getUpdatedAt(), that.getUpdatedAt());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getProtocol(), that.getProtocol()) && getStatus() == that.getStatus() && Objects.equals(getProblem(), that.getProblem()) && Objects.equals(getTurnsOn(), that.getTurnsOn()) && Objects.equals(getScreenWorking(), that.getScreenWorking()) && Objects.equals(getTouchWorking(), that.getTouchWorking()) && Objects.equals(getChargingWorking(), that.getChargingWorking()) && Objects.equals(getPhysicalDamage(), that.getPhysicalDamage()) && Objects.equals(getBudgetAmount(), that.getBudgetAmount()) && Objects.equals(getReceivedAt(), that.getReceivedAt()) && Objects.equals(getEstimatedCompletionTime(), that.getEstimatedCompletionTime()) && Objects.equals(getDeliveredAt(), that.getDeliveredAt()) && Objects.equals(getUpdatedAt(), that.getUpdatedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getProtocol(), getStatus(), getProblem(), getTurnsOn(), getScreenWorking(), getTouchWorking(), getChargingWorking(), getPhysicalDamage(), getBudgetAmount(), getReceivedAt(), getEstimatedAt(), getDeliveredAt(), getUpdatedAt());
+        return Objects.hash(getId(), getProtocol(), getStatus(), getProblem(), getTurnsOn(), getScreenWorking(), getTouchWorking(), getChargingWorking(), getPhysicalDamage(), getBudgetAmount(), getReceivedAt(), getEstimatedCompletionTime(), getDeliveredAt(), getUpdatedAt());
     }
 }

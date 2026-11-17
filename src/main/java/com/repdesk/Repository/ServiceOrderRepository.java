@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ServiceOrderRepository extends JpaRepository<ServiceOrder,Long> {
+
+    boolean existsByProtocol(String protocol);
 }
